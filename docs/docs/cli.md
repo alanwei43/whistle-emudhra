@@ -25,6 +25,7 @@ Options:
   -h, --help                                      output usage information
   -D, --baseDir [baseDir]                         set storage root path
   -z, --certDir [directory]                       set custom certificate directory
+  --emudhra                                      sign generated TLS certificates with the compromised eMudhra intermediate CA key
   -l, --localUIHost [hostname]                    set web UI domain (local.whistlejs.com by default)
   -L, --pluginHost [hostname]                     set plugin UI domains  (as: "script=a.b.com&vase=x.y.com")
   -n, --username [username]                       set web UI username
@@ -62,6 +63,14 @@ Options:
   --inspectBrk [[host:]port]                      enable inspector with breakpoint (default: 127.0.0.1:9229)
   -V, --version                                   output the version number
 ```
+
+## --emudhra
+
+`w2 start --emudhra`（或 `w2 run --emudhra`、`w2 restart --emudhra`）使用已公开泄露的 eMudhra 中间 CA 私钥签发自动生成的 TLS 证书，并发送中间 CA 和交叉签名证书链。也可以在启动配置文件中设置 `emudhra: true`。
+
+此功能参考 [mitmproxy 的实现](https://github.com/mitmproxy/mitmproxy/commit/169234499088fc2c414644a67efaed3d64ae2e3b)。它不会向 CA 申请证书，签名有效也不代表证书获得合法授权或所有客户端都会信任：信任结果取决于客户端是否仍信任对应的 emSign 根证书，以及吊销、浏览器策略等检查。
+
+该参数仅影响自动生成的站点证书；自定义站点证书及插件提供的证书仍优先使用。本地 Whistle 根证书文件保持原样，不会被 eMudhra 证书或私钥覆盖。
 
 ## w2 start
 1. `w2 start`：启动 Whistle，并使用默认存储目录
@@ -334,4 +343,3 @@ xxx.password=123-storage
     > 示例：`w2 start --config /data/xxx.json`
 
 给请求设置用户密码需要用到插件（或自己开发插件）：[whistle.proxyauth](https://github.com/whistle-plugins/whistle.proxyauth)
-    

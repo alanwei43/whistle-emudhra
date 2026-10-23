@@ -25,6 +25,7 @@ Options:
   -h, --help                                      output usage information
   -D, --baseDir [baseDir]                         set storage root path
   -z, --certDir [directory]                       set custom certificate directory
+  --emudhra                                      sign generated TLS certificates with the compromised eMudhra intermediate CA key
   -l, --localUIHost [hostname]                    set web UI domain (local.whistlejs.com by default)
   -L, --pluginHost [hostname]                     set plugin UI domains  (as: "script=a.b.com&vase=x.y.com")
   -n, --username [username]                       set web UI username
@@ -62,6 +63,14 @@ Options:
   --inspectBrk [[host:]port]                      enable inspector with breakpoint (default: 127.0.0.1:9229)
   -V, --version                                   output the version number
 ```
+
+## --emudhra
+
+`w2 start --emudhra` (also supported by `w2 run` and `w2 restart`) signs automatically generated TLS certificates with the publicly disclosed eMudhra intermediate CA key and sends the intermediate and cross-signed CA chain. Startup configuration files also support `emudhra: true`.
+
+This follows [mitmproxy's implementation](https://github.com/mitmproxy/mitmproxy/commit/169234499088fc2c414644a67efaed3d64ae2e3b). It does not request certificates from the CA. A valid signature does not establish legitimate authorization or universal client trust: verification depends on the client's emSign trust anchors, revocation checks and browser policies.
+
+Custom site certificates and plugin-provided certificates retain priority. The local Whistle root certificate and key files are preserved.
 
 ## w2 start
 1. `w2 start`: Starts Whistle and uses the default storage directory.
@@ -335,4 +344,3 @@ xxx.password=123-storage
   > Example: `w2 start --config /data/xxx.json`
 
 To set a user password for requests, you need a plugin (or develop your own): [whistle.proxyauth](https://github.com/whistle-plugins/whistle.proxyauth)
-    
