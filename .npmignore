@@ -55,6 +55,7 @@ node_modules
 .gitattributes
 .npmignore
 .travis.yml
+.github
 .eslintrc
 .editorconfig
 .eslintignore

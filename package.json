@@ -1,7 +1,7 @@
 {
-  "name": "whistle",
+  "name": "@js-core/whistle-emudhra",
   "description": "HTTP, HTTP2, HTTPS, Websocket debugging proxy",
-  "version": "2.10.12",
+  "version": "2.10.13",
   "dataDirname": ".whistle",
   "localUIHost": "local.whistlejs.com",
   "port": 8899,
@@ -11,7 +11,7 @@
   "contributors": [],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/avwo/whistle/issues"
+    "url": "https://github.com/alanwei43/whistle-emudhra/issues"
   },
   "homepage": "https://wproxy.org",
   "keywords": [
@@ -34,7 +34,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/avwo/whistle.git"
+    "url": "git+https://github.com/alanwei43/whistle-emudhra.git"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
     "adm-zip": "^0.6.1",
@@ -67,13 +71,15 @@
   "scripts": {
     "dev": "webpack --config ./biz/webui/htdocs/src/webpack.config -w",
     "start": "node bin/whistle.js run",
-    "test": "npm run lintfix && npm run test:emudhra && node test/index.test.js",
+    "test": "npm run lint && npm run test:emudhra && node test/index.test.js",
     "test:emudhra": "node test/emudhra.test.js",
     "lint": "eslint *.js ./lib ./bin ./biz ./test ./docs/script",
     "lintfix": "eslint --fix *.js ./lib ./bin ./biz ./test ./docs/script",
     "cov": "node_modules/istanbul/lib/cli.js cover node_modules/.bin/tape -- test/index.test.js",
     "docs:dev": "vitepress dev docs",
-    "docs": "vitepress build docs"
+    "docs": "vitepress build docs",
+    "build": "webpack --config ./biz/webui/htdocs/src/webpack.config.js",
+    "prepack": "npm run build"
   },
   "engines": {
     "node": ">= 16.0.0"

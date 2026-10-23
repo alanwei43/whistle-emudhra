@@ -6,6 +6,17 @@
 
 # whistle
 
+本 fork 的 npm 包名为 `@js-core/whistle-emudhra`，增加了 `--emudhra` 支持，命令仍为 `w2`、`whistle` 和 `wproxy`：
+
+```sh
+npm install -g @js-core/whistle-emudhra --registry=https://registry.npmjs.org/
+w2 start --emudhra
+```
+
+`--emudhra` 使用已公开泄露的中间 CA 私钥签发证书；客户端是否信任取决于信任库、吊销检查和浏览器策略，详见[参数说明](./docs/docs/cli.md#--emudhra)。
+
+发布到 npmjs.org 的 `@js-core` scope：更新 `package.json` 和 `package-lock.json` 的版本号，提交到 `master`，然后推送对应的 `v<版本号>` 标签。`.github/workflows/publish.yml` 会安装依赖、运行测试，并在打包时构建 Web UI，再发布 npm 包。首次发布需要在仓库的 Actions Secrets 中配置有发布权限的 `NPM_ACCESS_TOKEN`；后续也可以在 npm 包设置中为本仓库的 `publish.yml` 配置 Trusted Publishing。
+
 [![NPM version](https://img.shields.io/npm/v/whistle.svg?style=flat-square)](https://npmjs.org/package/whistle)
 [![node version](https://img.shields.io/badge/node.js->=_8-green.svg?style=flat-square)](http://nodejs.org/download/)
 [![npm download](https://img.shields.io/npm/dm/whistle.svg?style=flat-square)](https://npmjs.org/package/whistle)
